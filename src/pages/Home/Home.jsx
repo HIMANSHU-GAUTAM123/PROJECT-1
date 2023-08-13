@@ -13,7 +13,7 @@ const Home = () => {
     };
     const history = useNavigate();
     function startRegister() {
-        history('/register');
+        history('/authenticate');
     }
     return (
         <div className={styles.cardWrapper}>
