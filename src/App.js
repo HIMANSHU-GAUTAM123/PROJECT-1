@@ -1,19 +1,25 @@
 import './App.css';
-import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
+import {useState} from 'react';
+import {BrowserRouter, Routes, Route, Navigate, Outlet} from 'react-router-dom';
 import Home from './pages/Home/Home';
 import Navigation from './components/shared/Navigation/Navigation';
 import Authenticate from './pages/Authenticate/Authenticate';
 import Activate from './pages/Activate/Activate';
 import Rooms from './pages/Rooms/Rooms';
-//import { useSelector } from 'react-redux';
-const isAuth=false;
-const user={
-  activated: false
-};
+import Room from './pages/Room/Room';
+import { useSelector } from 'react-redux';
+import { useLoadingWithRefresh } from './hooks/useLoadingWithRefresh';
+import Loader from './components/shared/Loader/Loader';
 
 
+ 
 function App() {
-    return (
+    const { loading } = useLoadingWithRefresh();
+      
+    return loading ? (
+        <Loader message="Loading, please wait.." />
+    ) : (
+
         <BrowserRouter>
             <Navigation />
             <Routes>
@@ -38,7 +44,7 @@ function App() {
 }
 
 const GuestRoute = () => {
-   // const { isAuth } =false;// useSelector((state) => state.auth);
+   const { isAuth } = useSelector((state) => state.auth);
     
         
                 return (isAuth ? <Navigate to='/rooms'/>
@@ -48,7 +54,7 @@ const GuestRoute = () => {
 };
 
 const SemiProtectedRoute = ({ children, ...rest }) => {
- //   const { user, isAuth } = useSelector((state) => state.auth);
+   const { user, isAuth } = useSelector((state) => state.auth);
     
                 return( !isAuth ? (
                     <Navigate to='/' />
@@ -64,7 +70,7 @@ const SemiProtectedRoute = ({ children, ...rest }) => {
 };
 
 const ProtectedRoute = () => {
-   // const { user, isAuth } = //useSelector((state) => state.auth);
+    const { user, isAuth } = useSelector((state) => state.auth);
     
         
         
